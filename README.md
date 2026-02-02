@@ -1,6 +1,6 @@
 # Network Intrusion Detection System using Machine Learning
 
-## 📌 Project Overview
+## Project Overview
 
 This project implements a **machine learning-based Intrusion Detection System (IDS)** to identify malicious network activity (anomalies / intrusions) in real-time or near real-time.  
 We use the well-known **NSL-KDD dataset** (improved version of classic KDD Cup 1999) and apply multiple classical and ensemble machine learning algorithms to classify network connections as **normal** or **anomalous**.
@@ -15,7 +15,7 @@ Machine learning offers the ability to:
 - Scale to high-volume network traffic
 - Reduce false positives over time with better feature engineering and model selection
 
-## 🎯 Objectives
+## Objectives
 
 - Build an accurate and efficient ML-based intrusion detection model
 - Compare performance of multiple classifiers (Logistic Regression, SVM, Decision Tree, Random Forest, KNN, etc.)
@@ -23,14 +23,14 @@ Machine learning offers the ability to:
 - Achieve high detection rate while keeping false positives low
 - Provide reproducible code and clear documentation
 
-## 🚀 Goals
+## Goals
 
 - Develop a system capable of detecting both **known** and **novel** attack patterns
 - Handle high-dimensional network traffic features effectively
 - Outperform baseline traditional methods in accuracy, recall, and F1-score
 - Create a foundation that can later be extended to deep learning or real-time streaming detection
 
-## 📊 Dataset
+## Dataset
 
 **Source**: NSL-KDD (improved KDD Cup 1999 dataset)  
 **Files included**:
@@ -44,7 +44,7 @@ Machine learning offers the ability to:
 - Binary target: `normal` vs `anomaly` (originally multi-class attack types collapsed to binary)
 - Simulated military network environment with realistic normal traffic + various attack types (DoS, Probe, R2L, U2R)
 
-## 🛠️ Methodology & Preprocessing Pipeline
+## Methodology & Preprocessing Pipeline
 
 1. **Data Cleaning**  
    - Checked for missing values (`isnull().sum()`)  
@@ -80,7 +80,7 @@ Machine learning offers the ability to:
    - Specificity
    - F1 Score
 
-## 📈 Best Results (from notebook)
+## Best Results (from notebook)
 
 | Model               | Accuracy   | Error Rate | Sensitivity (Recall) | Specificity | F1 Score   |
 |---------------------|------------|------------|-----------------------|-------------|------------|
