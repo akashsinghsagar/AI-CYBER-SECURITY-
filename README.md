@@ -1,8 +1,5 @@
 # Network Intrusion Detection System using Machine Learning
 
-![Banner](https://via.placeholder.com/1200x300/1e3a8a/ffffff?text=Network+Intrusion+Detection+using+ML)  
-*(Replace the placeholder URL above with your own banner image if you upload one later)*
-
 ## 📌 Project Overview
 
 This project implements a **machine learning-based Intrusion Detection System (IDS)** to identify malicious network activity (anomalies / intrusions) in real-time or near real-time.  
