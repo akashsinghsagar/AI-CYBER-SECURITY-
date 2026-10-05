@@ -1,117 +1,81 @@
-# Network Intrusion Detection System using Machine Learning
+# AI-Driven Cyber Threat Awareness and Detection Prototype
 
-## Project Overview
+Mini project for **ENSP355: AI in Cyber Security Lab**. This repository
+implements an end-to-end, educational intrusion-detection workflow using the
+NSL-KDD-style network connection data already supplied with the project.
 
-This project implements a **machine learning-based Intrusion Detection System (IDS)** to identify malicious network activity (anomalies / intrusions) in real-time or near real-time.  
-We use the well-known **NSL-KDD dataset** (improved version of classic KDD Cup 1999) and apply multiple classical and ensemble machine learning algorithms to classify network connections as **normal** or **anomalous**.
+## What is included
 
-### Why this project matters
+* **Task 1 - Bootstrap:** reproducible `requirements.txt`, `.gitignore`,
+  `data/`, `src/`, and a Python virtual-environment workflow.
+* **Task 2 - EDA:** class-balance, suspicious-indicator, and
+  attack-feature-distribution plots.
+* **Task 3 - Classical ML:** leakage-safe imputation, one-hot encoding,
+  standardisation, Logistic Regression, and accuracy/precision/recall/F1.
+* **Task 4 - Deep-learning prototype:** an `MLPClassifier` neural network,
+  compared with Logistic Regression on the same split and features, including
+  training time.
 
-Cyberattacks are becoming increasingly sophisticated, automated, and frequent. Traditional signature-based IDS struggle with zero-day attacks and polymorphic malware.  
-Machine learning offers the ability to:
+## Project layout
 
-- Learn complex patterns from data
-- Detect previously unseen attack variants (anomaly-based detection)
-- Scale to high-volume network traffic
-- Reduce false positives over time with better feature engineering and model selection
+```text
+data/                           Dataset documentation and optional CSV copies
+src/analysis_pipeline.py        Reproducible EDA + ML + MLP pipeline
+Network_intrusion_detection.ipynb  Original exploratory notebook
+Train_data.csv                  Labeled training data
+Test_data.csv                   Unlabeled evaluation/prediction data
+outputs/                        Generated plots, metrics, and predictions
+```
 
-## Objectives
+## Run on Windows
 
-- Build an accurate and efficient ML-based intrusion detection model
-- Compare performance of multiple classifiers (Logistic Regression, SVM, Decision Tree, Random Forest, KNN, etc.)
-- Apply proper preprocessing, feature selection, and scaling
-- Achieve high detection rate while keeping false positives low
-- Provide reproducible code and clear documentation
+```powershell
+py -3.10 -m venv venv
+.\venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python .\src\analysis_pipeline.py
+```
 
-## Goals
+If PowerShell blocks activation, call the interpreter directly:
 
-- Develop a system capable of detecting both **known** and **novel** attack patterns
-- Handle high-dimensional network traffic features effectively
-- Outperform baseline traditional methods in accuracy, recall, and F1-score
-- Create a foundation that can later be extended to deep learning or real-time streaming detection
+```powershell
+.\venv\Scripts\python.exe .\src\analysis_pipeline.py
+```
 
-## Dataset
+The command creates `outputs/` containing:
 
-**Source**: NSL-KDD (improved KDD Cup 1999 dataset)  
-**Files included**:
+* `class_distribution.png`
+* `feature_distributions.png`
+* `threat_indicators.png`
+* `model_metrics.csv`
+* `detailed_metrics.json`
+* predictions for both models on `Test_data.csv`
 
-- `Train_data.csv` → Training set
-- `Test_data.csv`   → Testing / evaluation set
+`Test_data.csv` has no target labels, so its predictions are not used for
+scoring. The metrics are calculated on a stratified validation split of the
+labeled training data. This makes the comparison fair and avoids pretending
+that unlabeled data has known outcomes.
 
-**Key characteristics**:
+## Interpretation and practical feasibility
 
-- 41 features (38 numeric + 3 categorical: protocol_type, service, flag)
-- Binary target: `normal` vs `anomaly` (originally multi-class attack types collapsed to binary)
-- Simulated military network environment with realistic normal traffic + various attack types (DoS, Probe, R2L, U2R)
+Logistic Regression is a fast, transparent baseline. The MLP is a small neural
+network prototype and may capture non-linear relationships, but it requires
+more training time and careful monitoring. Accuracy alone is not sufficient
+for an operational IDS: recall matters for missed attacks, while precision
+matters for analyst workload and false alarms. Thresholds should be tuned on
+representative production data before deployment.
 
-## Methodology & Preprocessing Pipeline
+## Ethical and operational considerations
 
-1. **Data Cleaning**  
-   - Checked for missing values (`isnull().sum()`)  
-   - Dropped useless / constant column: `num_outbound_cmds`
+This is a classroom prototype, not a production security control. Network data
+can contain sensitive information. Obtain authorization, minimize retained
+data, protect exported predictions, and document dataset bias. Human analysts
+must review alerts; model output should not automatically block users or
+attribute malicious intent. Monitor drift, false positives, false negatives,
+and performance across different environments.
 
-2. **Categorical Encoding**  
-   - `LabelEncoder` applied to: `protocol_type`, `service`, `flag`
+## Dataset attribution
 
-3. **Feature Selection**  
-   - Recursive Feature Elimination (**RFE**) with `RandomForestClassifier`  
-   - Selected top 10 most important features
-
-4. **Feature Scaling**  
-   - `StandardScaler` → mean=0, std=1 (important for distance-based models like KNN, SVM)
-
-5. **Train / Validation Split**  
-   - `train_test_split` (usually 80/20 or 70/30)
-
-6. **Models Trained & Compared**
-
-   - Logistic Regression
-   - Support Vector Machine (SVM)
-   - Decision Tree
-   - Random Forest
-   - K-Nearest Neighbors (KNN)
-   - (Others can be easily added: XGBoost, LightGBM, etc.)
-
-7. **Evaluation Metrics**
-
-   - Accuracy
-   - Error Rate
-   - Sensitivity / Recall
-   - Specificity
-   - F1 Score
-
-## Best Results (from notebook)
-
-| Model               | Accuracy   | Error Rate | Sensitivity (Recall) | Specificity | F1 Score   |
-|---------------------|------------|------------|-----------------------|-------------|------------|
-| Random Forest       | **99.55%** | 0.45%      | 99.55%                | 99.70%      | 99.55%     |
-| Decision Tree       | **99.55%** | 0.45%      | 99.55%                | 99.70%      | 99.55%     |
-| KNN                 | 98.90%     | 1.10%      | 98.90%                | 99.20%      | 98.90%     |
-| Logistic Regression | 97.45%     | 2.55%      | 97.45%                | 98.03%      | 97.45%     |
-| SVM                 | 94.27%     | 5.73%      | 94.27%                | 96.11%      | 94.26%     |
-
-**Top performers**: Random Forest & Decision Tree → ~99.55% accuracy on the test set.
-
-## 🏗️ How to Run the Project Locally
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/Harshr24/Network_intrusion_detection.git
-cd Network_intrusion_detection
-
-# 2. (Recommended) Create virtual environment
-python -m venv venv
-source venv/bin/activate          # Linux / macOS
-venv\Scripts\activate             # Windows
-
-# 3. Install dependencies
-pip install -r requirements.txt   # (create this file if not present)
-
-# Common packages you will need:
-# numpy pandas scikit-learn matplotlib seaborn jupyter
-
-# 4. Launch Jupyter Notebook
-jupyter notebook
-
-# 5. Open → Network_intrusion_detection.ipynb
-# Run all cells sequentially
+The CSVs are NSL-KDD-style intrusion-detection data supplied with the project.
+They represent simulated traffic and should not be interpreted as current
+real-world attack prevalence.
